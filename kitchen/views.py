@@ -34,26 +34,17 @@ class KitchenDetailView(DetailView):
     template_name = 'kitchen/kitchen_detail.html'
     context_object_name = 'kitchen'
     food = Food.objects.all()
-    extra_context = {'cart_add_form': CartAddItemForm(), 'foods': food}
-#class HomePageView(TemplateView):
-#    template_name = "kitchen/home.html"
+    customers = Customer.objects.all()
 
-#    def get_context_data(self, **kwargs):
-#        context = super().get_context_data(**kwargs)
-#        context['number'] = random.randrange(1, 100)
-#        context['latest_kitchen'] = Kitchen.objects.all()[:3]
-#        return context
+    extra_context = {'cart_add_form': CartAddItemForm(), 'foods': food, 'customers':customers}
 
-# class CustomerCreateView(LoginRequiredMixin, CreateView):
+
 class CustomerCreateView(CreateView):
     model = Customer
-    # fields = ['username', 'email', 'password', 'github'] # LEAKS DATA FOR PASSWORD IN DB
     template_name = 'registration/new_customer.html'
     success_url = reverse_lazy('kitchen:home')
     login_url = '/login/'
 
-
-    # @login_required --> What if non-user; how to initially register
     def new_customer(request):
         if request.method == 'POST':
             f = NewCustomerForm(request.POST)
@@ -82,9 +73,6 @@ class CustomerDetailView(DetailView):
         context['customer_list'] = Customer.objects.all()
         context['kitchen_list'] = Kitchen.objects.all()
         context['order_list'] = Order.objects.all()
-
-        print(context)
-
         return context
 
 
@@ -108,21 +96,6 @@ class CustomerDeleteView(DeleteView):
     template_name = 'customer/customer_confirm_delete.html'
     success_url = reverse_lazy('kitchen:home')
 
-
-
-
-# class NewCustomerFormView(FormView):
-#     template_name = 'registration/new_customer.html'
-#     form_class = NewCustomerForm
-#     success_url = '/kitchen/'
-#
-#     def form_valid(self, form):
-#         # This method is called when valid form data has been POSTed.
-#         # It should return an HttpResponse.
-#         form.send_email()
-#         return super().form_valid(form)
-
-
 class ProviderKitchenListView(LoginRequiredMixin,ListView):
     model = Kitchen
     context_object_name = 'kitchen'
@@ -145,21 +118,6 @@ def ProviderKitchenDetailView(request, pk):
         return redirect('kitchen:provider_kitchen_detail', pk=kitchen_obj.id)
     return render(request, 'kitchen/provider_kitchen_detail.html',{'kitchen': kitchen_obj, 'form': Form})
 
-    # model = Kitchen
-    # extra_context = {'Food': Food.objects.all()}
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['kitchen_list'] = Kitchen.objects.all()
-    #     return context
-
-# class KitchenCreateView(CreateView):
-#     model = Kitchen
-#     fields = ['name', 'open_time', 'close_time']
-#     template_name = 'kitchen/kitchen_create.html'
-#     success_url = reverse_lazy('kitchen:home')
-#     #TODO: # login_url = '/login/'
-# @login_required(login_url='kitchen:login', redirect_field_name='kitchen:kitchen_create')
 @login_required(login_url='kitchen:login')
 def KitchenCreateView(request):
     customer = get_object_or_404(Customer, username=request.user)
@@ -177,14 +135,6 @@ def KitchenCreateView(request):
                 customer=customer
             )
             k_instance.save()
-            # foodForm = FoodFormSet(request.POST, instance=k_instance)
-            # if foodForm.is_valid():
-            #     # post = foodForm.save(commit=False)
-            #     # post.kitchen = k_instance
-            #     # post.save()
-            #     foodForm.save()
-            # else:
-            #     return render(request, 'kitchen/kitchen_create.html',{'kitchen_form':form,'food_form': foodForm, 'error': 'Bad data entry'})
         else:
             return render(request, 'kitchen/kitchen_create.html',{'kitchen_form':form,'error': 'Bad data entry'})
         return HttpResponseRedirect(reverse_lazy('kitchen:provider_kitchen_detail',args=(k_instance.id,)))
@@ -206,36 +156,6 @@ class KitchenDeleteView(DeleteView):
     success_url = reverse_lazy('kitchen:index')
     #TODO: # login_url = '/login/'
 
-
-# def FoodCreateView(request, pk):
-#     kitchen_obj = get_object_or_404(Kitchen, pk=pk)
-#     form = FoodForm()
-#     if request.method == 'POST':
-#         form = FoodForm(request.POST)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.kitchen = kitchen_obj
-#             post.save()
-#         else:
-#             return render(request, 'food/food_create.html',{'form':form, 'kitchen_id':pk, 'error': 'Bad data entry'})
-#         return HttpResponseRedirect(reverse_lazy('kitchen:provider_kitchen_detail',args=(pk,)))
-#     return render(request, 'food/food_create.html',{'form':form, 'kitchen_id':pk})
-# class FoodDetailView(DetailView):
-#     pass
-# def FoodUpdateView(request, kpk, fpk):
-    # model = Food
-    # fields = '__all__'
-    # exclude = ['kitchen']
-    # template_name = 'food/food_update.html'
-    # success_url = reverse_lazy('kitchen:food_detail')
-    # pass
-
-# def FoodDeleteView(request, kpk, fpk):
-#     food_obj = get_object_or_404(Food, pk=fpk)
-#     if request.method == 'POST':
-#         food_obj.delete()
-#         return HttpResponseRedirect(reverse_lazy('kitchen:provider_kitchen_detail',args=(kpk,)))
-#     return render(request, 'food/food_confirm_delete.html',{'name':food_obj.name, 'kitchen_id': kpk})
 
 def profile(request):
     # return HttpResponse('this is the profile page')
@@ -318,22 +238,6 @@ def OrderCreate(request):
 def OrderSuccess(request):
     # send email
     return render(request, 'order/order_success.html')
-
-# @staff_member_required
-# def admin_order_detail(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     return render(request, 'order/admin_detail.html', {'order': order})
-
-
-# @staff_member_required
-# def admin_order_pdf(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     html = render_to_string('order/pdf.html', {'order': order})
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = 'filename="order_{}.pdf"'.format(order.id)
-#     #weasyprint.HTML(string=html).write_pdf(response,
-#                                            #stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + 'css/pdf.css')])
-#     return response
 
 def check():
     pass

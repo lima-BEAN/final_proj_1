@@ -1,0 +1,22 @@
+<html lang="en" dir="ltr">
+    {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <title>Feast Freedom</title>
+  </head>
+  <body>
+    <a href="{% url 'kitchen:home' %}">Feast Freedom</a>
+    <a href="{% url 'kitchen:kitchen_create' %}">Kitchen Registration</a>
+    <div>
+      {% if user.username %}
+      <p>
+        User: {{ user.username }} |
+        <a href="{% url 'kitchen:logout' %}">logout</a>
+      </p>
+      {% else %}
+      <p><a href="{% url 'kitchen:new_customer' %}">Sign Up</a></p>
+      {% endif %}
+    </div>
+    {% block content %}{% endblock %}
+  </body>
+</html>

@@ -223,19 +223,22 @@ def CartAdd(request, pk):
     return redirect('kitchen:cart_detail')
 
 
-def CartRemove(request, item_id):
+def CartRemove(request, pk):
     cart = Cart(request)
-    item = get_object_or_404(Food, id=item_id)
+    item = get_object_or_404(Food, id=pk)
     cart.remove(item)
     return redirect('kitchen:cart_detail')
 
 
 def CartDetail(request):
     cart = Cart(request)
+    kitchen_id = ''
     for item in cart:
         item['update_quantity_form'] = CartAddItemForm(initial={'quantity': item['quantity'],'update': True})
         kitchen_id = item['item'].kitchen_id
     return render(request, 'cart/cart_detail.html', {'cart': cart, 'kitchen_id': kitchen_id})
+
+
 
 def OrderCreate(request):
     cart = Cart(request)

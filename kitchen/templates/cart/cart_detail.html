@@ -44,7 +44,12 @@
     </tbody>
     </table>
     <p>
-        <a href="{% url 'kitchen:kitchen_detail' kitchen_id %}">Continue shopping</a>
-        <a href="{% url 'kitchen:order_create' %}">Checkout</a>
+          {% if kitchen_id != '' %}
+            <a href="{% url 'kitchen:kitchen_detail' kitchen_id %}">Continue shopping</a>
+            <a href="{% url 'kitchen:order_create' %}">Checkout</a>
+          {% else %}
+            <h3>No ITEMS in cart</h3>
+            Check out restaurants to choose from <a href="{% url 'kitchen:home' %}">here</a>.
+          {% endif %}
     </p>
 {% endblock %}

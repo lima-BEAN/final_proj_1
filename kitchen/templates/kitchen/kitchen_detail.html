@@ -1,41 +1,84 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <img src="{% if kitchen.image %}{{ kitchen.image.url }}{% else %}{{ 'img/no_image.png' }}{% endif %}">
-    <p>Name - {{ kitchen.name }}</p>
-    <p>Open Hours - {{ kitchen.open_time }}-{{ kitchen.close_time }}</p>
-    <p>Working Days - {{ kitchen.working_days }}</p>
+<div class="album py-5 bg-light">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+      <div class="col">
+        <div class="card shadow-sm">
+
+          <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#55595c"/>
+            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+          </svg> -->
+
+        <a href="{% url 'kitchen:kitchen_detail' kitchen.id %}">
+         <img src="{{kitchen.image.url}}" alt="" class="bd-placeholder-img card-img-top" width="100%" height="225">
+        </a>
+          <div class="card-body">
+            <ul class="card-text" style="list-style-type:none">
+              <li>Name: {{kitchen.name}}</li>
+              <li>Open time: {{kitchen.open_time}}</li>
+              <li>Close time: {{kitchen.close_time}}</li>
+              <li>Working Days: {{kitchen.working_days}}</li>
+
+            </ul>
+            <!-- <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+              </div>
+              <small class="text-muted">9 mins</small>
+            </div> -->
+          </div> <!-- END of .card-body -->
+        </div> <!-- END of .card shadow-sm -->
+      </div> <!-- END of .col -->
+
+    </div> <!-- END OF .row -->
+  </div> <!--END of .container -->
+</div> <!-- END of .album -->
+
+
     <p>Menu</p>
     <table>
         <thead>
             <tr>
                 <th>Item Name</th>
                 <th>Diet</th>
-                <th>Quantity</th>
-                <th>Remove</th>
+                <!-- <th>Quantity</th> -->
                 <th>Price</th>
+                <th>Remove</th>
             </tr>
         </thead>
-        {{foods}}
+        <!-- {{foods}} -->
         <tbody>
         {% for item in foods %}
             {% if item.kitchen.id == kitchen.id %}
             <tr>
                 <td>{{item.name}}</td>
                 <td>{{item.diet}}</td>
-                <td>
-                    <form action="{% url 'kitchen:cart_add' item.id %}" method="post">
-                        {{ cart_add_form }}
-                        <input type="submit" value="Update">
-                        {% csrf_token %}
-                    </form>
-                </td>
                 <td><a href="{% url 'kitchen:cart_remove' item.id %}">Remove</a></td>
                 <td>{{ item.price }}</td>
+                <!-- <td> -->
+                    <form action="{% url 'kitchen:cart_add' item.id %}" method="post">
+                        {% csrf_token %}
+                        {{ cart_add_form }}
+                        <input type="submit" value="Add Item">
+                    </form>
+                <!-- </td> -->
+
+
+
             </tr>
             {% endif %}
         {% endfor %}
         </tbody>
     </table>
     <a href="{% url 'kitchen:cart_detail' %}">View Cart</a>
+
+
+
+
 {% endblock %}

@@ -39,15 +39,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       <div class="col">
 
-        {% for c in customers %}
-          {% if c.username == kitchen.customer.username %}
-          <form method="post" action="{% url 'kitchen:kitchen_detail' kitchen.id %}"enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" value="Submit">Save</button>
-          </form>
-          {% endif %}
-        {% endfor %}
+
       </div> <!-- END of .col -->
     </div> <!-- END of .row -->
 

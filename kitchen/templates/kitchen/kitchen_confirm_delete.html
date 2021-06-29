@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="POST">
+      {% csrf_token %}
+      <p>Are you sure you want to delete: <br> "{{ object }}"</p>
+      <button type="submit" value="Confirm">Confirm</button>
+    </form>
+    <h3>Go back to <a href="{% url 'kitchen:index' %}">Kitchen Catalog</a></h3>
+    <a href="{% url 'kitchen:index' %}">  <h3>Go HOME</a></h3>
+{% endblock %}

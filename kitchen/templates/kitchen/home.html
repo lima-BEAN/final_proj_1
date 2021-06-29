@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if kitchens %}
+    {% for kitchen in kitchens %}
+      <a href="{% url 'kitchen:kitchen_detail' kitchen.id %}">{{kitchen.name}}</a>
+    {% endfor %}
+  {% else %}
+    <p>no registered kitchens</p>
+  {% endif %}
+{% endblock %}

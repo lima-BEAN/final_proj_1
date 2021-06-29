@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+      <h1>{{kitchen.name}}</h1>
+        <ul>
+          <li>Kitchen Name: {{kitchen.name}}</li>
+          <li>Working Hours: {{kitchen.open_time}}-{{kitchen.close_time}}</li>
+          <li>Working Days: {{kitchen.working_days}}</li>
+        </ul>
+
+      <h5><a href="{% url 'kitchen:kitchen_create' %}">Create New Kitchen</a></h5>
+      <h5><a href="{% url 'kitchen:kitchen_update' kitchen.id %}">Update Kitchen</a></h5>
+      <h5><a href="{% url 'kitchen:kitchen_confirm_delete' kitchen.id %}">Delete Kitchen</a></h5>
+      <h3>Go back to <a href="{% url 'kitchen:index' %}">Kitchen Catalog</a></h3>
+    <a href="{% url 'kitchen:index' %}">  <h3>Go HOME</a></h3>
+    {% if error %}
+      <div style="color:red;">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="{% url 'kitchen:provider_kitchen_detail' kitchen.id %}"enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" value="Submit">Save</button>
+    </form>
+{% endblock %}

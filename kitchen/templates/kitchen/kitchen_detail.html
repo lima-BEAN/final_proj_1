@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <img src="{% if kitchen.image %}{{ kitchen.image.url }}{% else %}{{ 'img/no_image.png' }}{% endif %}">
+    <p>Name - {{ kitchen.name }}</p>
+    <p>Open Hours - {{ kitchen.open_time }}-{{ kitchen.close_time }}</p>
+    <p>Working Days - {{ kitchen.working_days }}</p>
+    <p>Menu</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Diet</th>
+                <th>Quantity</th>
+                <th>Remove</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        {{foods}}
+        <tbody>
+        {% for item in foods %}
+            {% if item.kitchen.id == kitchen.id %}
+            <tr>
+                <td>{{item.name}}</td>
+                <td>{{item.diet}}</td>
+                <td>
+                    <form action="{% url 'kitchen:cart_add' item.id %}" method="post">
+                        {{ cart_add_form }}
+                        <input type="submit" value="Update">
+                        {% csrf_token %}
+                    </form>
+                </td>
+                <td><a href="{% url 'kitchen:cart_remove' item.id %}">Remove</a></td>
+                <td>{{ item.price }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'kitchen:cart_detail' %}">View Cart</a>
+{% endblock %}

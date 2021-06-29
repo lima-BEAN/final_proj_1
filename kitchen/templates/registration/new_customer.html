@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form method="POST" action="{% url 'kitchen:new_customer' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" value="Submit">Submit</button>
+    <a href="{% url 'kitchen:index' %}" > Cancel </a>
+  </form>
+  <p>Already have an account?<a href="{% url 'kitchen:login' %}">Sign in now</a></p>
+  <p><a href="#"></a>Forgot Password?</a></p>
+{% endblock %}

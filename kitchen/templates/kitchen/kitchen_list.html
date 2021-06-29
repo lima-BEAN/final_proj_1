@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+      <h1>Kitchen Catalog</h1>
+      <a href="{% url 'kitchen:kitchen_create' %}">  <h5>Add Kitchen</a></h5>
+      <a href="{% url 'kitchen:home' %}">  <h5>Go HOME</a></h5>
+      {% for k in kitchen %}
+        <ul>
+          <p>Kitchen Name: <a href="{% url 'kitchen:provider_kitchen_detail' k.id %}">{{ k.name }}</a> </p>
+        </ul>
+        <br>
+      {% endfor %}
+{% endblock %}

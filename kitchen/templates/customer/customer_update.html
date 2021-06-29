@@ -1,0 +1,12 @@
+<!-- CURRENTLY LOADING THIS HTML FOR UPDATE PRODUCT PAGE -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <form method="POST" action="{% url 'kitchen:customer_update' object.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" value="Update">Update</button>
+    <a href="{% url 'kitchen:home' %}" > Cancel </a>
+  </form>
+{% endblock %}

@@ -39,7 +39,7 @@
   <body>
     <!-- <a href="{% url 'kitchen:home' %}">Feast Freedom</a> -->
     {% if user.username %}
-      Active User: ({{ user.username }}) | <a href="{% url 'kitchen:kitchen_create' %}">Kitchen Registration</a> | <a href="{% url 'kitchen:logout' %}">logout</a>
+      Active User: (<a href="{% url 'kitchen:customer_detail' user.id %}">{{ user.username }}</a>) | <a href="{% url 'kitchen:kitchen_create' %}">Kitchen Registration</a> | <a href="{% url 'kitchen:logout' %}">logout</a>
     {% else %}
       <a href="{% url 'kitchen:new_customer' %}">Sign Up</a>
       <a href="{% url 'kitchen:login' %}">Login</a>

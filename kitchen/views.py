@@ -67,6 +67,49 @@ class CustomerCreateView(CreateView):
             f = NewCustomerForm()
         return render(request, 'registration/new_customer.html', {'form': f})
 
+class CustomerListView(ListView):
+    model = Customer
+    context_object_name = 'customers'
+
+
+class CustomerDetailView(DetailView):
+    model = Customer
+    template_name = 'customer/customer_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['customers'] = Customer.objects.all()
+        context['customer_list'] = Customer.objects.all()
+        context['kitchen_list'] = Kitchen.objects.all()
+
+        print(context)
+
+        return context
+
+
+class CustomerUpdateView(UpdateView):
+    model = Customer
+    fields = ['username', 'email', 'password']
+    template_name = 'customer/customer_update.html'
+    success_url = reverse_lazy('kitchen:customer_detail')
+    template_name_suffix = '_update_form'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # context['customers'] = Customer.objects.all()
+        context['customer_list'] = Customer.objects.all()
+
+        return context
+
+class CustomerDeleteView(DeleteView):
+    model = Customer
+    template_name = 'customer/customer_confirm_delete.html'
+    success_url = reverse_lazy('kitchen:home')
+
+
+
+
 # class NewCustomerFormView(FormView):
 #     template_name = 'registration/new_customer.html'
 #     form_class = NewCustomerForm
@@ -194,7 +237,9 @@ class KitchenDeleteView(DeleteView):
 #     return render(request, 'food/food_confirm_delete.html',{'name':food_obj.name, 'kitchen_id': kpk})
 
 def profile(request):
-    return HttpResponse('this is the profile page')
+    # return HttpResponse('this is the profile page')
+    return render (request, 'accounts/profile.html')
+
 
 def register(request):
     if request.method == 'POST':

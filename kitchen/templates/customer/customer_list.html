@@ -1,0 +1,19 @@
+{% extends 'base.html'  %}
+{% load static %}
+
+{% block content %}
+    <h1>Customers List</h1>
+    <a href="{% url 'kitchen:home' %}">  <h5>Go HOME</a></h5>
+
+      {% for item in customers %}
+      {% if item.username %}
+        <a href="{% url 'kitchen:customer_detail' item.id %}"><h3>{{item.username}}</h3></a>
+      {% else %}
+        <a href="{% url 'kitchen:customer_detail' item.id %}"> <h3>No username available</h3> </a>
+      {% endif %}
+        <ul>
+          <li>{{item.email}}</li>
+        </ul>
+      {% endfor %}
+
+{% endblock %}

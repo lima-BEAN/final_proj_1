@@ -17,7 +17,7 @@ from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
 
 from . import views
-# from kitchen.views import CustomerCreateView
+from kitchen.views import CustomerDetailView, CustomerUpdateView, CustomerDeleteView
 app_name = 'kitchen'
 
 urlpatterns = [
@@ -39,7 +39,9 @@ urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(template_name="registration/login.html"), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name="registration/logout.html"), name='logout'),
 
+    # path('accounts/profile/', views.profile, name='profile'),
     path('accounts/profile/', views.profile, name='profile'),
+
 
     path('ordercreate', views.OrderCreate, name='order_create'),
     path('ordersuccess', views.OrderSuccess, name='order_success'),
@@ -51,5 +53,10 @@ urlpatterns = [
     # re_path(r'^register/$', views.register, name='register'),
 
     re_path(r'^register/$', views.CustomerCreateView.new_customer, name='new_customer'),
+
+    path('customer/<pk>', CustomerDetailView.as_view(), name='customer_detail'),
+    path('customer/<pk>/update', CustomerUpdateView.as_view(), name='customer_update'),
+    path('customer/<pk>/delete', CustomerDeleteView.as_view(), name='customer_delete'),
+
 
 ]

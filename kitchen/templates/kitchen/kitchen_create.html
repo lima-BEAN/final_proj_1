@@ -8,6 +8,6 @@
         {% csrf_token %}
         {{ kitchen_form.as_p }}
         <button type="submit" value="Submit">Add Menu Items</button>
-        <a href="{% url 'kitchen:index' %}" > Cancel </a>
+        <a href="{% url 'kitchen:home' %}" > Cancel </a>
     </form>
 {% endblock %}

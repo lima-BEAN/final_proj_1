@@ -81,6 +81,7 @@ class CustomerDetailView(DetailView):
         # context['customers'] = Customer.objects.all()
         context['customer_list'] = Customer.objects.all()
         context['kitchen_list'] = Kitchen.objects.all()
+        context['order_list'] = Order.objects.all()
 
         print(context)
 

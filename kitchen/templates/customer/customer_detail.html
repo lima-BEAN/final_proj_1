@@ -2,17 +2,33 @@
 
 {% block content %}
     <h1>{{object.username}}</h1>
-        <ul>
-          <li>{{object.email}}</li>
+        <ul class="list-unstyled">
+          <li>Email: {{object.email}}</li>
+          <li>Kitchen Provider: {{object.is_provider}}</li>
         </ul>
 
-        <h3>Kitchens owned by: {{object.username}}</h3>
+        <h3>Kitchens owned:</h3>
         {% for k in kitchen_list %}
           {% if object.username == k.customer.username %}
-            {{k}}
+          <ul>
+            <li> <a href="{% url 'kitchen:kitchen_detail' k.id %}">{{k}}</a></li>
+          </ul>
           {% endif %}
         {% endfor %}
-        <a href="{% url 'kitchen:customer_update' object.id %}"> <h5>UPDATE</h5> </a>
-        <a href="{% url 'kitchen:customer_delete' object.id %}"> <h5>DELETE</h5> </a>
-    <a href="{% url 'kitchen:home' %}">  <h3>Go HOME</a></h3>
+
+        <h3>Completed Orders:</h3>
+        {% for o in order_list %}
+          {% if object.username == o.customer.username %}
+          <ul>
+            <li>{{o}}</li>
+          </ul>
+          {% endif %}
+        {% endfor %}
+        <p>
+          <a href="{% url 'kitchen:customer_update' object.id %}"> <h5>Update Customer</h5> </a>
+          <a href="{% url 'kitchen:customer_delete' object.id %}"> <h5>Delete Customer</h5> </a>
+        </p>
+        <p>
+          <a href="{% url 'kitchen:home' %}"> <h5>View All Kitchens</h5> </a>
+        </p>
 {% endblock %}

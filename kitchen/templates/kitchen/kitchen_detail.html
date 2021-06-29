@@ -59,17 +59,15 @@
             <tr>
                 <td>{{item.name}}</td>
                 <td>{{item.diet}}</td>
-                <td><a href="{% url 'kitchen:cart_remove' item.id %}">Remove</a></td>
                 <td>{{ item.price }}</td>
-                <!-- <td> -->
+                <td><a href="{% url 'kitchen:cart_remove' item.id %}">Remove</a></td>
+                <td>
                     <form action="{% url 'kitchen:cart_add' item.id %}" method="post">
                         {% csrf_token %}
                         {{ cart_add_form }}
                         <input type="submit" value="Add Item">
                     </form>
-                <!-- </td> -->
-
-
+                </td>
 
             </tr>
             {% endif %}

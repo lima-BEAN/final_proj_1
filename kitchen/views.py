@@ -88,7 +88,6 @@ class ProviderKitchenListView(LoginRequiredMixin,ListView):
         customer = get_object_or_404(Customer,username=user)
         return Kitchen.objects.filter(customer=customer)
 
-# @login_required(login_url='')
 def ProviderKitchenDetailView(request, pk):
     kitchen_obj = get_object_or_404(Kitchen, pk=pk)
     FoodFormSet = inlineformset_factory(Kitchen, Food, fields='__all__',extra=1, max_num=10)
@@ -117,6 +116,7 @@ def ProviderKitchenDetailView(request, pk):
 #     success_url = reverse_lazy('kitchen:home')
 #     #TODO: # login_url = '/login/'
 # @login_required(login_url='kitchen:login', redirect_field_name='kitchen:kitchen_create')
+@login_required(login_url='kitchen:login')
 def KitchenCreateView(request):
     customer = get_object_or_404(Customer, username=request.user)
     form = KitchenForm()
